@@ -28,7 +28,7 @@ class ContactHelper {
 
   Future<Database> initDb() async {
     final databasesPath = await getDatabasesPath();
-    final path = join(databasesPath, "contacts.db");
+    final path = join(databasesPath, "contactsnew.db");
 
     return await openDatabase(path, version: 1,
         onCreate: (Database db, int newerVersion) async {
@@ -52,7 +52,7 @@ class ContactHelper {
     if (maps.isNotEmpty) {
       return Contact.fromMap(maps.first);
     } else {
-      return ;
+      return Contact();
     }
   }
 
@@ -64,7 +64,7 @@ class ContactHelper {
 
   Future<int> uptadeContact(Contact contact) async {
     Database dbContact = await db;
-    return await dbContact.update(contactTable, contact.,
+    return await dbContact.update(contactTable, contact.toMap(),
         where: "$idColum = ?", whereArgs: [contact.id]);
   }
 
@@ -91,11 +91,14 @@ class ContactHelper {
 }
 
 class Contact {
+  
   int id = 0;
   String name = '';
   String email = '';
   String phone = '';
   String img = '';
+
+  Contact();
 
   Contact.fromMap(Map map) {
     id = map[idColum];
@@ -105,7 +108,7 @@ class Contact {
     img = map[imgColum];
   }
 
-  Map toMap() {
+  Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
       nameColum: name,
       emailColum: email,
