@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../helpers/contact_helper.dart';
@@ -17,13 +19,12 @@ class _HomePageState extends State<HomePage> {
   List<Contact> contacts = [];
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    helper.getAllContacts().then((list){
+    helper.getAllContacts().then((list) {
       setState(() {
         contacts = list;
       });
-
     });
   }
 
@@ -37,18 +38,60 @@ class _HomePageState extends State<HomePage> {
       ),
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: () {},
         child: Icon(Icons.add),
-      backgroundColor: Colors.red,),
+        backgroundColor: Colors.red,
+      ),
       body: ListView.builder(
-        padding: EdgeInsets.all(10.0),
-        itemCount: contacts.length,
-        itemBuilder: (context, index) {
+          padding: EdgeInsets.all(10.0),
+          itemCount: contacts.length,
+          itemBuilder: (context, index) {
+            return _contactCard(context, index);
+          }),
+    );
+  }
 
-        }
-        
+  Widget _contactCard(BuildContext context, int index) {
+    return GestureDetector(
+      child: Card(
+        child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Row(children: <Widget>[
+            Container(
+              width: 80.0,
+              height: 80.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image: contacts[index].img != null
+                        ? FileImage(File(contacts[index].img))
+                        : AssetImage("images/person.png")),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    contacts[index].name,
+                    style:
+                        TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    contacts[index].email,
+                    style: TextStyle(fontSize: 10.0),
+                  ),
+                  Text(
+                    contacts[index].phone,
+                    style: TextStyle(fontSize: 17.0),
+                  ),
+                ],
+              ),
+            )
+          ]),
         ),
-      
+      ),
     );
   }
 }
