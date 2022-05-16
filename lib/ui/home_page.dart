@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unnecessary_null_comparison
 
 import 'dart:io';
 
@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                 shape: BoxShape.circle,
                 image: DecorationImage(
                     image: contacts[index].img != null
-                        ? FileImage(File(contacts[index].img))
+                        ? FileImage(File(contacts[index].img)) as ImageProvider
                         : AssetImage("images/person.png")),
               ),
             ),
@@ -74,21 +74,21 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    contacts[index].name,
+                    contacts[index].name ?? "",
                     style:
                         TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    contacts[index].email,
+                    contacts[index].email ?? "",
                     style: TextStyle(fontSize: 10.0),
                   ),
                   Text(
-                    contacts[index].phone,
+                    contacts[index].phone ?? "",
                     style: TextStyle(fontSize: 17.0),
                   ),
                 ],
               ),
-            )
+            ),
           ]),
         ),
       ),
