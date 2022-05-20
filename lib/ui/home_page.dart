@@ -2,9 +2,9 @@
 
 import 'dart:io';
 
+import 'package:agenda_de_contactos/ui/contact_page.dart';
 import 'package:flutter/material.dart';
-
-import '../helpers/contact_helper.dart';
+import 'package:agenda_de_contactos/helpers/contact_helper.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,15 +17,12 @@ class _HomePageState extends State<HomePage> {
   ContactHelper helper = ContactHelper();
 
   List<Contact> contacts = [];
+ 
 
   @override
   void initState() {
     super.initState();
-    helper.getAllContacts().then((list) {
-      setState(() {
-        contacts = list;
-      });
-    });
+    _getAllContacts();
   }
 
   @override
@@ -38,7 +35,9 @@ class _HomePageState extends State<HomePage> {
       ),
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          _showContactPage(Contact());
+        },
         child: Icon(Icons.add),
         backgroundColor: Colors.red,
       ),
@@ -64,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                 shape: BoxShape.circle,
                 image: DecorationImage(
                     image: contacts[index].img != null
-                        ? FileImage(File(contacts[index].img)) as ImageProvider
+                        ? FileImage(File(contacts[index].img!)) as ImageProvider
                         : AssetImage("images/person.png")),
               ),
             ),
@@ -80,11 +79,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Text(
                     contacts[index].email ?? "",
-                    style: TextStyle(fontSize: 10.0),
+                    style: TextStyle(fontSize: 18.0),
                   ),
                   Text(
                     contacts[index].phone ?? "",
-                    style: TextStyle(fontSize: 17.0),
+                    style: TextStyle(fontSize: 18.0),
                   ),
                 ],
               ),
@@ -92,6 +91,35 @@ class _HomePageState extends State<HomePage> {
           ]),
         ),
       ),
+      onTap: () {
+        _showContactPage(contacts[index]);
+      },
     );
+  }
+
+  void _showContactPage(Contact contact) async {
+    final reContact = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: ((context) => ContactPage(
+                  contact: contact,
+                ))));
+    if (reContact != null) {
+      if (contact != null) {
+        await helper.uptadeContact(reContact);
+        _getAllContacts();
+      } else {
+        await helper.saveContact(reContact);
+      }
+      _getAllContacts();
+    }
+  }
+
+  void _getAllContacts() {
+    helper.getAllContacts().then((list) {
+      setState(() {
+        contacts = list;
+      });
+    });
   }
 }

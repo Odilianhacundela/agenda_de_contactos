@@ -2,10 +2,11 @@
 
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'dart:async';
 
 final String contactTable = 'contactTable';
 final String idColum = 'idColum';
-final String nameColum = 'nameColum';
+final String nameColum = 'nameColum'; 
 final String emailColum = 'emailColum';
 final String phoneColum = 'phoneColum';
 final String imgColum = 'imgColum';
@@ -79,7 +80,7 @@ class ContactHelper {
     return listContact;
   }
 
-  getNumber() async {
+  Future<int?> getNumber() async {
     Database dbContact = await db;
     return Sqflite.firstIntValue(
         await dbContact.rawQuery("SELECT COUNT(*) FROM $contactTable"));
@@ -92,11 +93,11 @@ class ContactHelper {
 }
 
 class Contact {
-  int id = 0;
-  String name = '';
-  String email = '';
-  String phone = '';
-  String img = '';
+  int ? id;
+  String ? name;
+  String ? email;
+  String ? phone;
+  String ? img;
 
   Contact();
 
