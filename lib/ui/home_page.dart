@@ -17,7 +17,6 @@ class _HomePageState extends State<HomePage> {
   ContactHelper helper = ContactHelper();
 
   List<Contact> contacts = [];
- 
 
   @override
   void initState() {
@@ -36,7 +35,8 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _showContactPage(Contact());
+          // ignore: null_check_always_fails
+          _showContactPage();
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.red,
@@ -92,12 +92,13 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       onTap: () {
-        _showContactPage(contacts[index]);
+        
+        _showContactPage(contact: contacts[index]);
       },
     );
   }
 
-  void _showContactPage(Contact contact) async {
+  void _showContactPage ({Contact? contact}) async {
     final reContact = await Navigator.push(
         context,
         MaterialPageRoute(

@@ -20,7 +20,6 @@ class _ContactPageState extends State<ContactPage> {
 
   final _nameFocus = FocusNode();
 
-  bool _usereditor = false;
   late Contact _editorContact;
   @override
   void initState() {
@@ -79,7 +78,6 @@ class _ContactPageState extends State<ContactPage> {
                 focusNode: _nameFocus,
                 decoration: InputDecoration(labelText: "Nome"),
                 onChanged: (text) {
-                  _usereditor = true;
                   setState(() {
                     _editorContact.name = text;
                   });
@@ -89,7 +87,6 @@ class _ContactPageState extends State<ContactPage> {
                 controller: _emailController,
                 decoration: InputDecoration(labelText: "Email"),
                 onChanged: (text) {
-                  _usereditor = true;
                   _editorContact.email = text;
                 },
                 keyboardType: TextInputType.emailAddress,
@@ -98,7 +95,6 @@ class _ContactPageState extends State<ContactPage> {
                 controller: _phoneController,
                 decoration: InputDecoration(labelText: "Telefone"),
                 onChanged: (text) {
-                  _usereditor = true;
                   _editorContact.phone = text;
                 },
                 keyboardType: TextInputType.phone,
